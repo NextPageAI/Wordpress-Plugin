@@ -32,7 +32,19 @@ class NextPage {
   public function add_script() {
     $siteID = get_option("np_siteid");
     if (strlen($siteID) > 0) {
-      $snippet = '<script async defer src="https://cdn.nextpage.ai/nextpage.js?sid=' . $siteID . '"></script>';
+      $snippet = "
+      <script>
+        //nextpage.ai code snippet
+        const _np_sid = '" . $siteID . "';
+        (function(d) {
+          var e = d.createElement('script'),
+              s = d.scripts[0];
+          e.crossorigin = 'anonymous';
+          e.async = e.src = 'https://cdn.nextpage.ai/nextpage.js';
+          s.parentNode.insertBefore(e, s);
+        }(document));
+      </script>
+      ";
     } else {
       $snippet = '<!-- nextpage site id not configured -->';
     }
@@ -63,17 +75,6 @@ class NextPage {
     return array_merge( $links, $settings_link );
   }
 
-  // public function embed_snippet() {
-  //   $siteID = get_option("np_siteid");
-
-  //   // if ($siteID) {
-
-  //     $snippet = '<script async defer src="https://cdn.nextpage.ai/nextpage.js?sid=' . $siteID . '"></script>';
-
-  //     update_option('nextpage_code_snippet', $snippet);
-  //     delete_option('np_siteid');
-  //   // }
-  // }
 }
 
 add_action( 'init', 'NextPageForWordPress' );
